@@ -8,13 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 import java.util.Map;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/api/event") // ✅ Ruta corregida
 public class EventController {
 
     @Autowired
@@ -76,7 +75,7 @@ public class EventController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "No se encontró el evento con ID: " + id)));
     }
 
-    // Mapeo modelo → DTO
+    // Mapeo DTO → Modelo
     private Event mapToModel(EventDTO dto) {
         Event event = new Event();
         event.setName(dto.getName());
@@ -86,7 +85,7 @@ public class EventController {
         return event;
     }
 
-    // Mapeo modelo → DTO
+    // Mapeo Modelo → DTO
     private EventDTO mapToDTO(Event event) {
         EventDTO dto = new EventDTO();
         dto.setId(event.getId());
