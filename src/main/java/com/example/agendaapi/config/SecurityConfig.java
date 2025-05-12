@@ -7,9 +7,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import java.util.List;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
 @Configuration
 public class SecurityConfig {
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,6 +26,7 @@ public class SecurityConfig {
             }))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin estado
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/contact/**").permitAll() // Permitir acceso a contactos
                 .requestMatchers("/api/event/**").permitAll() // Permitir acceso a eventos
                 .requestMatchers("/api/reminder/**").permitAll() // Permitir acceso a recordatorios

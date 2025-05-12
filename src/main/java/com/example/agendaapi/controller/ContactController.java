@@ -3,7 +3,10 @@ package com.example.agendaapi.controller;
 import com.example.agendaapi.dto.ContactDTO;
 import com.example.agendaapi.model.Contact;
 import com.example.agendaapi.repository.ContactRepository;
+import com.example.agendaapi.repository.UserRepository;
+
 import jakarta.validation.Valid;
+import com.example.agendaapi.model.User; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/contact")
+@RequestMapping("/api/contact") 
 public class ContactController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // GET /api/contacts
     @GetMapping
@@ -28,17 +34,32 @@ public class ContactController {
 
     // POST /api/contacts
     @PostMapping
-    public ResponseEntity<ContactDTO> store(@RequestBody @Valid ContactDTO dto) {
-    try {
-        Contact contact = mapToModel(dto);
-        Contact saved = contactRepository.save(contact);
-        return new ResponseEntity<>(mapToDTO(saved), HttpStatus.CREATED);
-    } catch (Exception e) {
-        e.printStackTrace(); // Muestra el stack trace completo
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-}
+public ResponseEntity<Contact> store(@RequestBody ContactDTO dto) {
+    Contact contact;
 
+    if (dto.getId() != null && contactRepository.existsById(dto.getId())) {
+        // Si viene un ID y ya existe → editar
+        contact = contactRepository.getReferenceById(dto.getId());
+    } else {
+        // Si no hay ID → crear uno nuevo
+        contact = new Contact();
+    }
+
+    // Asigna los campos comunes
+    contact.setFirst_name(dto.getFirst_name());
+    contact.setLast_name(dto.getLast_name());
+    contact.setEmail(dto.getEmail());
+    contact.setPhone_number(dto.getPhone_number());
+    contact.setNotes(dto.getNotes());
+
+    // Relación con usuario
+    User user = userRepository.findById(dto.getUserId()).orElseThrow();
+    contact.setUser(user);
+
+    // Guarda en la BD
+    Contact saved = contactRepository.save(contact);
+    return ResponseEntity.status(201).body(saved);
+}
     // GET /api/contacts/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ContactDTO> show(@PathVariable Long id) {
@@ -77,18 +98,6 @@ public class ContactController {
     }
 
     // Métodos auxiliares
-
-    private Contact mapToModel(ContactDTO dto) {
-        Contact contact = new Contact();
-        contact.setId(dto.getId());
-        contact.setFirst_name(dto.getFirst_name());
-        contact.setLast_name(dto.getLast_name());
-        contact.setEmail(dto.getEmail());
-        contact.setPhone_number(dto.getPhone_number());
-        contact.setNotes(dto.getNotes());
-        return contact;
-    }
-
     private ContactDTO mapToDTO(Contact contact) {
         ContactDTO dto = new ContactDTO();
         dto.setId(contact.getId());

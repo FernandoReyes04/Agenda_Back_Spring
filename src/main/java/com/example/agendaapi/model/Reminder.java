@@ -13,7 +13,15 @@ public class Reminder {
     private String name;
     private String description;
     private String email;
-    private LocalDate date; // Cambiado a LocalDate para mejor manejo de fechas
+    private LocalDate date;
+    
+    // ✅ Campo hour – Debe estar aquí
+    private String hour;
+
+    // 🔥 Relación con User – debe tener getter y setter
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     // Getters y Setters
 
@@ -56,4 +64,20 @@ public class Reminder {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-}
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+}   

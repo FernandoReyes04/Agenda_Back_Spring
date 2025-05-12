@@ -2,9 +2,12 @@ package com.example.agendaapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+// Para que no aparezcan campos null en JSON de respuesta
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReminderDTO {
 
     private Long id;
@@ -21,7 +24,22 @@ public class ReminderDTO {
     @NotNull(message = "La fecha es obligatoria")
     private LocalDate date;
 
-    // Getters y Setters
+    private String hour; // Campo para la hora del recordatorio
+
+    private Long userId; // Relación con usuario logueado
+
+    public ReminderDTO() {}
+
+    public ReminderDTO(Long id, String name, String description, String email, LocalDate date, String hour) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.email = email;
+        this.date = date;
+        this.hour = hour;
+    }
+
+    // Getters y Setters normales
 
     public Long getId() {
         return id;
@@ -61,5 +79,22 @@ public class ReminderDTO {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    // ✅ Getter y setter para userId – Eran los faltantes
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

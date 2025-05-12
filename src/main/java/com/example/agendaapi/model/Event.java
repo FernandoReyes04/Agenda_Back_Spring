@@ -8,13 +8,27 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String name;
     private String date;
     private String hour;
     private String description;
 
-    // Getters y Setters
+    // 🔥 Relación con User
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Event() {}
+
+    public Event(String name, String date, String hour, String description) {
+        this.name = name;
+        this.date = date;
+        this.hour = hour;
+        this.description = description;
+    }
+
+    // ✅ Getters y Setters completos
 
     public Long getId() {
         return id;
@@ -54,5 +68,14 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    // ✅ Getter y setter para User
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

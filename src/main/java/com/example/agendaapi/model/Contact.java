@@ -16,6 +16,15 @@ public class Contact implements Serializable {
     private String phone_number;
     private String notes;
 
+    // 🔥 Campo faltante: Relación con User
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public void setUser(User user) {
+    this.user = user;
+}
+
     // Getters y Setters
 
     public Long getId() { return id; }
