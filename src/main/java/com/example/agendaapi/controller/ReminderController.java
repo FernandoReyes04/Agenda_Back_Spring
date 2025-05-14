@@ -136,11 +136,23 @@ public ResponseEntity<?> store(@RequestBody @Valid ReminderDTO dto) {
 
     // Método para enviar correo electrónico de recordatorio
     private void sendEmail(Reminder reminder) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(reminder.getEmail());
-        message.setSubject("Nuevo recordatorio: " + reminder.getName());
-        message.setText("Tu recordatorio '" + reminder.getName() + "' ha sido creado.\nFecha: " + reminder.getDate() + "\nDescripción: " + reminder.getDescription());
-        
-        mailSender.send(message);
-    }
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(reminder.getEmail());
+    message.setSubject("Nuevo recordatorio: " + reminder.getName());
+    
+    String body = "Hola,\n\n"
+        + "Te informamos que se ha creado exitosamente un nuevo recordatorio con los siguientes detalles:\n\n"
+        + "Título: " + reminder.getName() + "\n"
+        + "Fecha: " + reminder.getDate() + "\n"
+        + "Descripción: " + reminder.getDescription() + "\n\n"
+        + "Te recomendamos revisarlo y tomar las acciones necesarias a tiempo.\n\n"
+        + "Gracias por confiar en nosotros.\n"
+        + "¡Que tengas un excelente día!\n\n"
+        + "Saludos cordiales,\n"
+        + "Equipo de AgendaApp";
+
+    message.setText(body);
+    mailSender.send(message);
+}
+
 }

@@ -16,11 +16,19 @@ public class ReminderService {
     }
 
     public void sendEmail(Reminder reminder) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(reminder.getEmail());
-        message.setSubject("Recordatorio: " + reminder.getName());
-        message.setText("Tu recordatorio '" + reminder.getName() + "' está programado para " + reminder.getDate() + ".");
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(reminder.getEmail());
+    message.setSubject("Recordatorio importante: " + reminder.getName());
+    message.setText("Hola,\n\n"
+        + "Este es un recordatorio cordial para informarte que tienes programado: \"" + reminder.getName() + "\" "
+        + "para el día " + reminder.getDate() + ".\n\n"
+        + "Te recomendamos tenerlo presente y tomar las previsiones necesarias.\n\n"
+        + "Gracias por usar nuestra agenda.\n"
+        + "¡Que tengas un excelente día!\n\n"
+        + "Saludos cordiales,\n"
+        + "El equipo de AgendaApp");
 
-        mailSender.send(message);
-    }
+    mailSender.send(message);
+}
+
 }
