@@ -14,11 +14,9 @@ public class Reminder {
     private String description;
     private String email;
     private LocalDate date;
-    
-    // ✅ Campo hour – Debe estar aquí
+ 
     private String hour;
 
-    // 🔥 Relación con User – debe tener getter y setter
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

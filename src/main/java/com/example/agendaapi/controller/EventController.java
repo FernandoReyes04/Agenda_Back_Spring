@@ -36,43 +36,43 @@ public class EventController {
     // POST /api/event - Crear nuevo evento
     @PostMapping
 public ResponseEntity<EventDTO> store(@RequestBody @Valid EventDTO dto) {
-    // ✅ Log para ver todo el objeto recibido
+    //  Log para ver todo el objeto recibido
     System.out.println("Evento DTO completo: " + dto.toString());
     System.out.println("Nombre: " + dto.getName());
     System.out.println("Fecha: " + dto.getDate());
     System.out.println("userId: " + dto.getUserId());
 
 
-    // ✅ Verificar si userId es null o <= 0
+    //  Verificar si userId es null o <= 0
     if (dto.getUserId() == null || dto.getUserId() <= 0) {
-        System.out.println("❌ userId es nulo o inválido: " + dto.getUserId());
+        System.out.println("userId es nulo o inválido: " + dto.getUserId());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     try {
-        // ✅ Buscar usuario por ID
+        // Buscar usuario por ID
         User user = userRepository.findById(dto.getUserId()).orElseThrow(
             () -> new IllegalArgumentException("Usuario no encontrado con ID: " + dto.getUserId())
         );
 
-        // ✅ Asignar datos del evento
+        // Asignar datos del evento
         Event event = new Event();
         event.setName(dto.getName());
         event.setDescription(dto.getDescription());
         event.setDate(dto.getDate());
         event.setHour(dto.getHour());
-        event.setUser(user); // ✅ Relación con usuario
+        event.setUser(user); // Relación con usuario
 
         Event saved = eventRepository.save(event);
         return ResponseEntity.status(201).body(mapToDTO(saved));
 
     } catch (IllegalArgumentException e) {
-        // ✅ Manejo de errores personalizados
+        // Manejo de errores personalizados
         System.err.println("Error de validación: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
     } catch (Exception e) {
-        // ✅ Otros errores internos
+        // Otros errores internos
         System.err.println("Error interno al guardar evento: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }

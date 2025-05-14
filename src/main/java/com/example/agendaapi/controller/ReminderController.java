@@ -33,7 +33,7 @@ public class ReminderController {
     @PostMapping
 public ResponseEntity<?> store(@RequestBody @Valid ReminderDTO dto) {
     try {
-        // ✅ Validaciones claras
+        // Validaciones claras
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre es obligatorio");
         }
@@ -46,7 +46,7 @@ public ResponseEntity<?> store(@RequestBody @Valid ReminderDTO dto) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La fecha es obligatoria");
         }
 
-        // ✅ Busca al usuario por userId
+        // Busca al usuario por userId
         User user = userRepository.findById(dto.getUserId()).orElseThrow(
             () -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUserId())
         );
@@ -107,12 +107,12 @@ public ResponseEntity<?> store(@RequestBody @Valid ReminderDTO dto) {
         reminder.setHour(dto.getHour());
     }
 
-    // ✅ Asigna usuario solo si tenemos userId
+    // Asigna usuario solo si tenemos userId
     if (dto.getUserId() != null && dto.getUserId() > 0) {
         User user = userRepository.findById(dto.getUserId()).orElseThrow(
             () -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUserId())
         );
-        reminder.setUser(user); // ✅ Relación correcta
+        reminder.setUser(user);
     }
 
     return reminder;
@@ -126,7 +126,7 @@ public ResponseEntity<?> store(@RequestBody @Valid ReminderDTO dto) {
     dto.setEmail(reminder.getEmail());
     dto.setDate(reminder.getDate());
 
-    // ✅ Asignamos userId solo si existe en el recordatorio
+    // Asignamos userId solo si existe en el recordatorio
     if (reminder.getUser() != null && reminder.getUser().getId() != null) {
         dto.setUserId(reminder.getUser().getId()); // Ahora sí funciona
     }

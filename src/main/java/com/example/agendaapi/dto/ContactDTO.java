@@ -2,7 +2,7 @@ package com.example.agendaapi.dto;
 
 public class ContactDTO {
 
-    private Long id; // ✅ Campo faltante
+    private Long id;
     private String first_name;
     private String last_name;
     private String phone_number;

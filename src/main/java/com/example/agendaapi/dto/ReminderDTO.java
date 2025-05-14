@@ -89,7 +89,6 @@ public class ReminderDTO {
         this.hour = hour;
     }
 
-    // ✅ Getter y setter para userId – Eran los faltantes
     public Long getUserId() {
         return userId;
     }

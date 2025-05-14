@@ -14,7 +14,6 @@ public class Event {
     private String hour;
     private String description;
 
-    // 🔥 Relación con User
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -27,8 +26,6 @@ public class Event {
         this.hour = hour;
         this.description = description;
     }
-
-    // ✅ Getters y Setters completos
 
     public Long getId() {
         return id;
@@ -70,7 +67,6 @@ public class Event {
         this.description = description;
     }
 
-    // ✅ Getter y setter para User
     public User getUser() {
         return user;
     }

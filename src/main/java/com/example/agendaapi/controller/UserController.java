@@ -31,7 +31,7 @@ public class UserController {
    @PostMapping("/register")
 public ResponseEntity<?> register(@RequestBody @Valid UserDTO dto) {
     System.out.println("Datos recibidos: " + dto.getEmail());
-    System.out.println("Contraseña: " + dto.getPassword()); // ❌ Si es null → problema aquí
+    System.out.println("Contraseña: " + dto.getPassword()); // Si es null → problema aquí
 
     if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
         return ResponseEntity.status(400).body("El correo ya está registrado");
@@ -61,7 +61,7 @@ public ResponseEntity<User> login(@RequestBody LoginDTO dto) {
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // ✅ Comparamos contraseñas en texto plano
+        // Comparamos contraseñas en texto plano
         if (!dto.getPassword().equals(user.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
@@ -76,7 +76,7 @@ public ResponseEntity<User> login(@RequestBody LoginDTO dto) {
     // POST /api/users – Crear un nuevo usuario (opcional)
     @PostMapping
 public ResponseEntity<User> store(@RequestBody User user) {
-    // ✅ Guardamos contraseña en texto plano
+    // Guardamos contraseña en texto plano
     User saved = userRepository.save(user);
     return ResponseEntity.status(201).body(saved);
 }

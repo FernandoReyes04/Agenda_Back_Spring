@@ -16,7 +16,6 @@ public class Contact implements Serializable {
     private String phone_number;
     private String notes;
 
-    // 🔥 Campo faltante: Relación con User
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
